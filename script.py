@@ -1,15 +1,13 @@
 import PyPDF2
-import sys
 
-inputs = sys.argv[1:]
+template = PyPDF2.PdfFileReader(open("twopage.pdf", "rb"))
+watermark = PyPDF2.PdfFileReader(open("wtr.pdf", "rb"))
+output = PyPDF2.PdfFileWriter()
 
+for i in range(template.getNumPages()):
+    page = template.getPage(i)
+    page.merge_page(watermark.getPage(0))
+    output.addPage(page)
 
-def pdf_combiner(pdf_lisT):
-    merger = PyPDF2.PdfFileMerger()
-    for pdf in pdf_lisT:
-        print(pdf)
-        merger.append(pdf)
-    merger.write("super.pdf")
-
-
-pdf_combiner(inputs)
+    with open("new_pdf", "wb") as file:
+        output.write(file)
