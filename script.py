@@ -1,10 +1,15 @@
 import PyPDF2
+import sys
 
-with open("dummy.pdf", "rb") as file:
-    reader = PyPDF2.PdfFileReader(file)
-    page = reader.getPage(0)
-    page.rotateClockwise(180)
-    writer = PyPDF2.PdfFileWriter()
-    writer.addPage(page)
-    with open("tilt.pdf", "wb") as new_file:
-        writer.write(new_file)
+inputs = sys.argv[1:]
+
+
+def pdf_combiner(pdf_lisT):
+    merger = PyPDF2.PdfFileMerger()
+    for pdf in pdf_lisT:
+        print(pdf)
+        merger.append(pdf)
+    merger.write("super.pdf")
+
+
+pdf_combiner(inputs)
